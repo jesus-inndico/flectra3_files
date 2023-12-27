@@ -1499,8 +1499,9 @@ class Root(object):
         #   (the one using the cookie). That is a special feature of the Session Javascript class.
         # - It could allow session fixation attacks.
         if not explicit_session and hasattr(response, 'set_cookie'):
+            #originalmente httponly=True
             response.set_cookie(
-                'session_id', httprequest.session.sid, max_age=90 * 24 * 60 * 60, httponly=True)
+                'session_id', httprequest.session.sid, max_age=90 * 24 * 60 * 60, httponly=False)
 
         return response
 
@@ -1727,7 +1728,7 @@ class CommonController(Controller):
         """ Method used by client APIs to contact OpenERP. """
         return dispatch_rpc(service, method, args)
 
-    @route('/gen_session_id', type='json', auth="none")
+    @route('/gen_session_id', type='http', auth="none")
     def gen_session_id(self):
         nsession = root.session_store.new()
         return nsession.sid
