@@ -490,7 +490,7 @@ class Home(http.Controller):
 
     #Originalmente redirigía a redirect=None
     @http.route('/web/login', type='http', auth="none", sitemap=False, csrf=False)
-    def web_login(self, redirect='/web', **kw):
+    def web_login(self, redirect='/', **kw):
         ensure_db()
         request.params['login_success'] = True
         if request.httprequest.method == 'GET' and redirect and request.session.uid:
@@ -536,7 +536,7 @@ class Home(http.Controller):
         response.set_cookie('session_id', request.session.sid, max_age=0, httponly=True)
         delete_cookie = response.set_cookie('session_id', request.session.sid, max_age=0, httponly=True)
         print('delete cookies:', delete_cookie)
-        return response
+        return werkzeug.utils.redirect(redirect, 303)
 
     def get_view_ids(self, xml_ids):
         ids = []
