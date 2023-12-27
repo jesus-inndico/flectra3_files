@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <title>Flectra</title>
+         <style>
+            body {
+                font-family: Arial, sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+            }
+    
+            .container {
+                text-align: center;
+            }
+    
+            button {
+                padding: 10px 20px;
+                font-size: 16px;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app" data-session-id="{{ session_id }}"></div>
+        <div class="container">
+            <h1>¡Bienvenido Usuario Mopi!</h1>
+            <p id="sessionValue">Este es el session_id *_*: {{ session_id }}</p> 
+            <template id="session_info">
+                <t t-set="title">MOPI selector redirect page</t>                 
+                    <div class="oe_structure">                    
+                        <div class="container">                        
+                            <t t-foreach="session_info._fields" t-as="field">
+                                <dt><t t-esc="field"/></dt> 
+                                <dd><t t-esc="session_info[field]"/></dd>
+                            </t>                    
+                        </div>
+                    </div>
+        </template>
+            <p>No ha cometido ningún error, Click en el siguiente botón.</p>
+            <button onclick="redirect()">Redirigir</button>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var sessionId = document.getElementById('app').getAttribute('data-session-id');
+                document.cookie = `session_id=${sessionId}; expires=-1; path=/`;
+                console.log('El valor de session_id es:', sessionId);
+                });
+        </script>
+        <script>
+            function redirect() {         
+                window.location.href = 'http://localhost:5173';
+                setTimeout(function () {
+                    window.location.href = 'http://localhost:5173';
+                }, 10000);
+            }
+        </script>
+    </body>
+</html>
